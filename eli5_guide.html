@@ -1,0 +1,361 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ELI5: NestWay Slider (:8089) — 은퇴 금융자산 최적화 워크벤치</title>
+<style>
+  :root {
+    --bg: #0f172a;
+    --card-bg: #1e293b;
+    --card-border: #334155;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --accent: #38bdf8;
+    --accent-glow: rgba(56, 189, 248, 0.2);
+    --success: #4ade80;
+    --warning: #fbbf24;
+    --purple: #c084fc;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Segoe UI', Roboto, sans-serif; }
+  body { background: var(--bg); color: var(--text-main); padding: 2.2rem 1.5rem 4rem; max-width: 980px; margin: 0 auto; line-height: 1.55; }
+  .hero { text-align: center; margin-bottom: 2rem; }
+  .badge { display: inline-block; background: var(--accent-glow); color: var(--accent); border: 1px solid var(--accent); padding: 0.3rem 0.85rem; border-radius: 9999px; font-weight: 700; font-size: 0.85rem; margin-bottom: 0.75rem; }
+  .hero h1 { font-size: 2.35rem; font-weight: 800; margin-bottom: 0.6rem; letter-spacing: -0.02em; }
+  .hero p { font-size: 1.15rem; color: var(--text-muted); max-width: 720px; margin: 0 auto; }
+  .toggle-container { display: flex; justify-content: center; margin-bottom: 2rem; gap: 0.6rem; flex-wrap: wrap; }
+  .toggle-btn { background: var(--card-bg); border: 1px solid var(--card-border); color: var(--text-muted); padding: 0.65rem 1.35rem; border-radius: 9999px; font-weight: 600; font-size: 0.95rem; cursor: pointer; transition: all 0.2s; }
+  .toggle-btn.active { background: var(--accent); color: #0f172a; border-color: var(--accent); font-weight: 800; box-shadow: 0 0 18px var(--accent-glow); }
+  .view-panel { display: none; }
+  .view-panel.active { display: block; animation: fadeIn 0.3s ease-in; }
+  .metaphor-box { background: linear-gradient(135deg, rgba(56,189,248,0.12), rgba(192,132,252,0.12)); border: 2px dashed var(--accent); border-radius: 1rem; padding: 1.4rem 1.6rem; margin-bottom: 2rem; text-align: center; }
+  .metaphor-title { font-size: 1.15rem; font-weight: 800; color: var(--accent); margin-bottom: 0.45rem; }
+  .metaphor-desc { font-size: 1.03rem; color: var(--text-main); }
+  .compare-table { width: 100%; border-collapse: collapse; margin-top: 1rem; font-size: 0.9rem; text-align: left; background: rgba(15, 23, 42, 0.55); border-radius: 0.75rem; overflow: hidden; }
+  .compare-table th, .compare-table td { padding: 0.65rem 0.9rem; border-bottom: 1px solid var(--card-border); }
+  .compare-table th { color: var(--accent); font-weight: 700; background: rgba(30, 41, 59, 0.9); }
+  .compare-table code { color: var(--purple); font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; }
+  .stepper-container { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 1rem; padding: 1.75rem; margin-bottom: 2.2rem; }
+  .stepper-header { text-align: center; margin-bottom: 1.2rem; }
+  .stepper-header h2 { font-size: 1.35rem; font-weight: 800; margin-bottom: 0.25rem; }
+  .stepper-header p { font-size: 0.92rem; color: var(--text-muted); }
+  .stepper-nav { display: flex; gap: 0.5rem; margin-bottom: 1.4rem; justify-content: center; flex-wrap: wrap; }
+  .step-btn { background: var(--bg); border: 1px solid var(--card-border); color: var(--text-muted); padding: 0.55rem 1.1rem; border-radius: 0.6rem; font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.2s; }
+  .step-btn.active { background: var(--accent); color: #0f172a; border-color: var(--accent); transform: scale(1.04); }
+  .step-content { display: none; text-align: center; }
+  .step-content.active { display: block; animation: fadeIn 0.3s ease-in; }
+  .visual-canvas { width: 100%; height: 290px; display: flex; align-items: center; justify-content: center; margin: 0.8rem 0 1.2rem; background: rgba(15, 23, 42, 0.65); border-radius: 0.85rem; border: 1px solid rgba(255,255,255,0.07); padding: 0.75rem; }
+  .visual-canvas svg { max-width: 100%; max-height: 100%; }
+  .step-caption { font-size: 1.25rem; font-weight: 800; margin-top: 0.5rem; color: var(--text-main); }
+  .step-subtext { font-size: 0.98rem; color: var(--text-muted); margin-top: 0.35rem; max-width: 740px; margin-left: auto; margin-right: auto; }
+  .step-detail-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 0.9rem; margin-top: 1.2rem; text-align: left; }
+  .detail-box { background: rgba(15, 23, 42, 0.6); border: 1px solid var(--card-border); border-radius: 0.65rem; padding: 0.9rem 1rem; }
+  .detail-box h4 { font-size: 0.92rem; color: var(--accent); margin-bottom: 0.3rem; }
+  .detail-box p { font-size: 0.86rem; color: var(--text-muted); }
+  .grid-3 { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 1.2rem; }
+  .pill-card { background: var(--card-bg); border: 1px solid var(--card-border); border-radius: 0.85rem; padding: 1.35rem; text-align: center; }
+  .pill-icon { font-size: 2.1rem; margin-bottom: 0.5rem; }
+  .pill-title { font-size: 1.12rem; font-weight: 800; margin-bottom: 0.35rem; color: var(--text-main); }
+  .pill-desc { font-size: 0.9rem; color: var(--text-muted); }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: translateY(0); } }
+</style>
+</head>
+<body>
+  <div class="hero">
+    <div class="badge">🧒 ELI5 Interactive Visual Guide · Port :8089</div>
+    <h1>NestWay Slider — 은퇴 금융자산 최적화 워크벤치</h1>
+    <p>9장의 질문 카드로 준비물을 챙기고, 황금 슬라이더 하나로 100세까지의 5개 유리병 물줄기를 조절하는 스마트 내비게이션</p>
+  </div>
+
+  <!-- Perspective Toggle -->
+  <div class="toggle-container">
+    <button class="toggle-btn active" onclick="switchView('metaphor', this)">👶 일상 비유 (Everyday Metaphor)</button>
+    <button class="toggle-btn" onclick="switchView('reality', this)">⚙️ 실제 동작 (Under The Hood)</button>
+  </div>
+
+  <!-- Everyday Metaphor Panel -->
+  <div id="view-metaphor" class="view-panel active">
+    <div class="metaphor-box">
+      <div class="metaphor-title">💡 5살 아이에게 설명하는 NestWay Slider</div>
+      <div class="metaphor-desc">
+        <strong>NestWay Slider</strong>는 우리 집 돈이라는 물을 <strong>5개의 마법 유리병(IRP · ISA · 연금저축 · 일반계좌 · 가족법인)</strong>에 나눠 담고, 세금 도깨비에게 가장 적게 뺏기는 순서대로 수도꼭지를 틀어 <strong>100세까지 단 1방울(1원)도 잃어버리지 않게 지켜주는 물길 조절기</strong>예요!
+      </div>
+    </div>
+  </div>
+
+  <!-- Under The Hood Panel -->
+  <div id="view-reality" class="view-panel">
+    <div class="metaphor-box" style="border-color: var(--purple);">
+      <div class="metaphor-title" style="color: var(--purple);">⚙️ 엔지니어링 실제 동작 (Under The Hood)</div>
+      <div class="metaphor-desc">
+        브라우저 내 순수 TypeScript 엔진(<code>src/engine/ledgerKernel.ts</code>, <code>optimizer.ts</code>)이 <code>runCanonicalLedger(inputs, personalRatio)</code> 단일 5-바스켓 상태머신으로 51개년 <strong>회계 보존 항등식(<code>accountingResidual === 0</code>)</strong>을 보장하며, 무상태 백엔드 <code>server.py(:8089)</code>가 정적 앱과 읽기 전용 <strong>ETF SQLite DB(<code>etf_universe.db</code>)</strong>를 서빙합니다.
+      </div>
+      <table class="compare-table">
+        <thead>
+          <tr>
+            <th>계층</th>
+            <th>핵심 모듈 / 파일</th>
+            <th>역할 및 핵심 불변식</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><strong>UI 3-모드 셸</strong></td>
+            <td><code>src/App.tsx</code>, <code>InputWizard.tsx</code>, <code>ActionGuideView.tsx</code></td>
+            <td>① 9+1단계 위저드 ➔ ② 3단계 액션 가이드 + 4-타일 벤토 ➔ ⚡ 전문가 Split-Screen 뷰</td>
+          </tr>
+          <tr>
+            <td><strong>정본 원장 커널</strong></td>
+            <td><code>src/engine/ledgerKernel.ts</code> (832 LOC)</td>
+            <td>단일 5-바스켓 상태머신, 8단계 인출 워터폴, <code>accountingResidual === 0</code></td>
+          </tr>
+          <tr>
+            <td><strong>최적화 & 세무</strong></td>
+            <td><code>src/engine/optimizer.ts</code>, <code>taxAndHealth.ts</code></td>
+            <td><code>solveNestWaySlider</code>(21-Grid + ±4% 정밀탐색), T3(해외양도세 22%) · T4(임원급여/배당 합산과세) · T5(법정 퇴직소득세)</td>
+          </tr>
+          <tr>
+            <td><strong>백엔드 & ETF DB</strong></td>
+            <td><code>server.py</code>, <code>etf_universe.db</code></td>
+            <td>포트 <code>:8089</code> (<code>nestway-slider.service</code>), 한·미 1,274종 ETF 읽기전용(<code>mode=ro</code>)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Interactive Visual Stepper -->
+  <div class="stepper-container">
+    <div class="stepper-header">
+      <h2>🖼️ 3대 핵심 영역 시각적 탐색 (클릭해 보세요!)</h2>
+      <p>1. 상세 아키텍처 ➔ 2. 금융 엔진 (5-바스켓 & T3/T4/T5) ➔ 3. 상세 사용 매뉴얼 (3-탭 워크플로우)</p>
+    </div>
+
+    <div class="stepper-nav">
+      <button class="step-btn active" onclick="showStep(1, this)">1️⃣ 상세 아키텍처 (Architecture)</button>
+      <button class="step-btn" onclick="showStep(2, this)">2️⃣ 금융 엔진 (5-Basket & T3·T4·T5)</button>
+      <button class="step-btn" onclick="showStep(3, this)">3️⃣ 사용 매뉴얼 (탭 1 ➔ 탭 2 ➔ 탭 3)</button>
+    </div>
+
+    <!-- STEP 1: Architecture -->
+    <div id="step-1" class="step-content active">
+      <div class="visual-canvas">
+        <svg viewBox="0 0 820 240" width="100%" height="100%">
+          <defs>
+            <linearGradient id="archGrad" x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%" stop-color="#0284c7" stop-opacity="0.35"/>
+              <stop offset="100%" stop-color="#7c3aed" stop-opacity="0.35"/>
+            </linearGradient>
+          </defs>
+          <!-- Box 1: Browser 3-Mode UI -->
+          <rect x="20" y="30" width="230" height="180" rx="14" fill="url(#archGrad)" stroke="#38bdf8" stroke-width="2"/>
+          <text x="135" y="62" fill="#38bdf8" font-size="14" font-weight="800" text-anchor="middle">🖥️ 프론트엔드 3-모드 워크벤치</text>
+          <rect x="38" y="76" width="194" height="32" rx="6" fill="#0f172a" stroke="#334155"/>
+          <text x="135" y="97" fill="#f8fafc" font-size="12" font-weight="600" text-anchor="middle">① 조건 입력 위저드 (9+1단계)</text>
+          <rect x="38" y="116" width="194" height="32" rx="6" fill="#0f172a" stroke="#334155"/>
+          <text x="135" y="137" fill="#f8fafc" font-size="12" font-weight="600" text-anchor="middle">② 액션 가이드 &amp; 4-타일 벤토</text>
+          <rect x="38" y="156" width="194" height="32" rx="6" fill="#0f172a" stroke="#334155"/>
+          <text x="135" y="177" fill="#4ade80" font-size="12" font-weight="700" text-anchor="middle">⚡ 전문가 뷰 &amp; Catmull-Rom 차트</text>
+
+          <!-- Arrow 1 -->
+          <line x1="255" y1="120" x2="305" y2="120" stroke="#38bdf8" stroke-width="3" stroke-dasharray="5,4"/>
+          <polygon points="305,114 318,120 305,126" fill="#38bdf8"/>
+          <text x="285" y="106" fill="#94a3b8" font-size="11" text-anchor="middle">~40ms</text>
+
+          <!-- Box 2: Pure TS Engine -->
+          <rect x="320" y="30" width="235" height="180" rx="14" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+          <text x="437" y="62" fill="#c084fc" font-size="14" font-weight="800" text-anchor="middle">🧠 정본 원장 엔진 (src/engine/*)</text>
+          <text x="437" y="92" fill="#f8fafc" font-size="12" font-weight="700" text-anchor="middle">solveNestWaySlider(inputs)</text>
+          <text x="437" y="115" fill="#94a3b8" font-size="11" text-anchor="middle">runCanonicalLedger(inputs, pRatio)</text>
+          <rect x="342" y="132" width="190" height="58" rx="8" fill="#0f172a" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="437" y="154" fill="#4ade80" font-size="12" font-weight="800" text-anchor="middle">🛡️ accountingResidual === 0</text>
+          <text x="437" y="174" fill="#94a3b8" font-size="11" text-anchor="middle">1,174개 시나리오-연차 1원 무오차</text>
+
+          <!-- Arrow 2 -->
+          <line x1="560" y1="120" x2="610" y2="120" stroke="#fbbf24" stroke-width="3"/>
+          <polygon points="610,114 623,120 610,126" fill="#fbbf24"/>
+          <text x="588" y="106" fill="#fbbf24" font-size="11" text-anchor="middle">REST</text>
+
+          <!-- Box 3: Python Backend & SQLite -->
+          <rect x="625" y="30" width="175" height="180" rx="14" fill="#1e293b" stroke="#fbbf24" stroke-width="2"/>
+          <text x="712" y="62" fill="#fbbf24" font-size="14" font-weight="800" text-anchor="middle">🐍 server.py (:8089)</text>
+          <text x="712" y="92" fill="#f8fafc" font-size="12" font-weight="600" text-anchor="middle">🛡️ 무상태(Stateless) 서버</text>
+          <text x="712" y="114" fill="#94a3b8" font-size="11" text-anchor="middle">(개인 재무정보 서버 저장 0B)</text>
+          <rect x="642" y="132" width="140" height="58" rx="8" fill="#0f172a" stroke="#38bdf8"/>
+          <text x="712" y="155" fill="#38bdf8" font-size="12" font-weight="800" text-anchor="middle">📚 etf_universe.db</text>
+          <text x="712" y="174" fill="#94a3b8" font-size="11" text-anchor="middle">ETF 카탈로그 (mode=ro)</text>
+        </svg>
+      </div>
+      <div class="step-caption">1단계: 3-모드 워크벤치 + 단일 원장 엔진 + 무상태 ETF 서버</div>
+      <div class="step-subtext">서버 호출 없이 브라우저 안에서 0.04초 만에 51개년 시뮬레이션을 끝내고, 시나리오 파일은 내 기기에만 JSON으로 저장합니다.</div>
+      <div class="step-detail-grid">
+        <div class="detail-box">
+          <h4>👶 일상 비유: 3단 변신 로봇</h4>
+          <p>초보자에게는 친절한 질문 카드(탭 1)와 3단계 지침서(탭 2)로, 전문가에게는 슬라이더 조종석(탭 3)으로 변신해요.</p>
+        </div>
+        <div class="detail-box">
+          <h4>⚙️ 실제 구조: Zero-Drift 단일 상태</h4>
+          <p><code>App.tsx</code>의 단일 <code>inputs</code>와 <code>solveNestWaySlider(inputs)</code> 결과를 3개 탭이 공유하여 화면 간 숫자 불일치가 0원입니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 2: Financial Engine -->
+    <div id="step-2" class="step-content">
+      <div class="visual-canvas">
+        <svg viewBox="0 0 820 240" width="100%" height="100%">
+          <!-- 5 Jars on the left -->
+          <text x="195" y="26" fill="#38bdf8" font-size="14" font-weight="800" text-anchor="middle">🏺 5개의 투명 유리병 (5-Basket Ledger)</text>
+          <rect x="20" y="42" width="64" height="115" rx="10" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+          <rect x="24" y="95" width="56" height="58" rx="6" fill="#0284c7"/>
+          <text x="52" y="75" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">IRP</text>
+          <text x="52" y="130" fill="#e0f2fe" font-size="10" text-anchor="middle">퇴직금</text>
+
+          <rect x="92" y="42" width="64" height="115" rx="10" fill="#1e293b" stroke="#4ade80" stroke-width="2"/>
+          <rect x="96" y="85" width="56" height="68" rx="6" fill="#16a34a"/>
+          <text x="124" y="70" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">ISA</text>
+          <text x="124" y="125" fill="#dcfce7" font-size="10" text-anchor="middle">1억/인</text>
+
+          <rect x="164" y="42" width="64" height="115" rx="10" fill="#1e293b" stroke="#a855f7" stroke-width="2"/>
+          <rect x="168" y="90" width="56" height="63" rx="6" fill="#9333ea"/>
+          <text x="196" y="72" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">연금저축</text>
+          <text x="196" y="128" fill="#f3e8ff" font-size="10" text-anchor="middle">3.3~5.5%</text>
+
+          <rect x="236" y="42" width="64" height="115" rx="10" fill="#1e293b" stroke="#fbbf24" stroke-width="2"/>
+          <rect x="240" y="75" width="56" height="78" rx="6" fill="#d97706"/>
+          <text x="268" y="64" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">일반계좌</text>
+          <text x="268" y="120" fill="#fef3c7" font-size="10" text-anchor="middle">해외ETF</text>
+
+          <rect x="308" y="42" width="64" height="115" rx="10" fill="#1e293b" stroke="#f43f5e" stroke-width="2"/>
+          <rect x="312" y="70" width="56" height="83" rx="6" fill="#e11d48"/>
+          <text x="340" y="60" fill="#f8fafc" font-size="11" font-weight="700" text-anchor="middle">가족법인</text>
+          <text x="340" y="118" fill="#ffe4e6" font-size="10" text-anchor="middle">건보방어</text>
+
+          <!-- Conservation banner under jars -->
+          <rect x="20" y="172" width="352" height="44" rx="8" fill="#0f172a" stroke="#4ade80" stroke-width="1.5"/>
+          <text x="196" y="192" fill="#4ade80" font-size="12" font-weight="800" text-anchor="middle">항등식: 기말잔고 - (기초 + 수익 + 유입 - 생활비 - 세금) === 0원</text>
+          <text x="196" y="208" fill="#94a3b8" font-size="10" text-anchor="middle">8단계 절세 인출 워터폴: ①국민연금 ➔ ③법인급여 ➔ ④ISA ➔ ⑤저율연금 ➔ ⑥법인원금 ➔ ⑦일반계좌</text>
+
+          <!-- Right side: T3 / T4 / T5 & Slider Curve -->
+          <rect x="405" y="24" width="395" height="192" rx="12" fill="#1e293b" stroke="#334155" stroke-width="2"/>
+          <text x="602" y="50" fill="#fbbf24" font-size="13" font-weight="800" text-anchor="middle">⚖️ T3 · T4 · T5 정밀 세법 &amp; 최적 배분 곡선 (r* = 74:26)</text>
+          <rect x="422" y="64" width="360" height="36" rx="6" fill="#0f172a"/>
+          <text x="434" y="86" fill="#38bdf8" font-size="11" font-weight="700">T3 해외양도세 &amp; 고갈방어:</text>
+          <text x="575" y="86" fill="#f8fafc" font-size="11">인당 250만 공제 후 22% 과세 · 전구간 고갈 시 ALL_DEPLETE</text>
+
+          <rect x="422" y="108" width="360" height="36" rx="6" fill="#0f172a"/>
+          <text x="434" y="130" fill="#c084fc" font-size="11" font-weight="700">T4 임원급여+배당 합산과세:</text>
+          <text x="582" y="130" fill="#f8fafc" font-size="11">초과배당을 급여 과표 위에 누진 적층 + 익년 지역건보 산입</text>
+
+          <rect x="422" y="152" width="360" height="36" rx="6" fill="#0f172a"/>
+          <text x="434" y="174" fill="#4ade80" font-size="11" font-weight="700">T5 퇴직금 2단 과세 트랙:</text>
+          <text x="572" y="174" fill="#f8fafc" font-size="11">일시금은 근속연수 법정 퇴직세 즉시 차감 vs IRP 30~40% 감면</text>
+        </svg>
+      </div>
+      <div class="step-caption">2단계: 1원도 새지 않는 5개 유리병과 T3·T4·T5 세금 규칙</div>
+      <div class="step-subtext">21개 그리드 탐색 + ±4% 1% 정밀 탐색으로 최적의 개인:법인 비중(<code>r*</code>)을 찾고, 12회 이분탐색으로 100세까지 고갈 없는 최대 월 생활비(인출률 2.0%~6.0%+ 구간)를 역산합니다.</div>
+      <div class="step-detail-grid">
+        <div class="detail-box">
+          <h4>👶 일상 비유: 8단계 절세 수도꼭지</h4>
+          <p>세금이 0원이거나 아주 싼 수도꼭지(국민연금·법인급여·ISA·저율연금·법인원금 회수)부터 순서대로 틀어서 세금 도깨비를 이겨요!</p>
+        </div>
+        <div class="detail-box">
+          <h4>⚙️ 실제 수식: 대칭 청산 순자산</h4>
+          <p>100세 시점에 법인 잉여금 배당세(15.4%)와 개인 계좌 내재 세금을 대칭 차감한 <code>finalDisposableNetWorth</code>로 공정하게 승자를 가립니다.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- STEP 3: User Manual -->
+    <div id="step-3" class="step-content">
+      <div class="visual-canvas">
+        <svg viewBox="0 0 820 240" width="100%" height="100%">
+          <!-- Step Card 1 -->
+          <rect x="20" y="32" width="240" height="176" rx="12" fill="#1e293b" stroke="#38bdf8" stroke-width="2"/>
+          <circle cx="52" cy="64" r="16" fill="#38bdf8"/>
+          <text x="52" y="69" fill="#0f172a" font-size="14" font-weight="800" text-anchor="middle">1</text>
+          <text x="80" y="69" fill="#38bdf8" font-size="14" font-weight="800">① 조건 입력 위저드</text>
+          <text x="36" y="102" fill="#f8fafc" font-size="12">• 상단 4대 대표 프리셋 원클릭</text>
+          <text x="36" y="126" fill="#f8fafc" font-size="12">• Step 1~9 질문 카드에 하나씩 답변</text>
+          <text x="36" y="150" fill="#94a3b8" font-size="11">• [ⓘ 설명] 세법 팝업 &amp; [⚙️ 상세 옵션]</text>
+          <text x="36" y="174" fill="#4ade80" font-size="12" font-weight="700">• Step 10 요약 확인 후 결과 이동!</text>
+
+          <!-- Arrow -->
+          <polygon points="268,115 284,120 268,125" fill="#38bdf8"/>
+
+          <!-- Step Card 2 -->
+          <rect x="290" y="32" width="240" height="176" rx="12" fill="#1e293b" stroke="#4ade80" stroke-width="2"/>
+          <circle cx="322" cy="64" r="16" fill="#4ade80"/>
+          <text x="322" y="69" fill="#0f172a" font-size="14" font-weight="800" text-anchor="middle">2</text>
+          <text x="350" y="69" fill="#4ade80" font-size="14" font-weight="800">② 구성 가이드 &amp; 벤토</text>
+          <text x="306" y="102" fill="#f8fafc" font-size="12">• STEP 01 은퇴 전 연간 적립 공식</text>
+          <text x="306" y="126" fill="#f8fafc" font-size="12">• STEP 02 은퇴 D-Day 5대 계좌 배치표</text>
+          <text x="306" y="150" fill="#f8fafc" font-size="12">• STEP 03 은퇴 후 월 인출 공식</text>
+          <text x="306" y="174" fill="#38bdf8" font-size="12" font-weight="700">• 분석 01~04 벤토 타일 클릭 드릴다운</text>
+
+          <!-- Arrow -->
+          <polygon points="538,115 554,120 538,125" fill="#4ade80"/>
+
+          <!-- Step Card 3 -->
+          <rect x="560" y="32" width="240" height="176" rx="12" fill="#1e293b" stroke="#c084fc" stroke-width="2"/>
+          <circle cx="592" cy="64" r="16" fill="#c084fc"/>
+          <text x="592" y="69" fill="#0f172a" font-size="14" font-weight="800" text-anchor="middle">3</text>
+          <text x="620" y="69" fill="#c084fc" font-size="14" font-weight="800">⚡ 전문가 통합 뷰</text>
+          <text x="576" y="102" fill="#f8fafc" font-size="12">• 좌측 1% 배분·생활비 슬라이더 조절</text>
+          <text x="576" y="126" fill="#f8fafc" font-size="12">• 1,274종 실시간 ETF 포트폴리오 빌더</text>
+          <text x="576" y="150" fill="#f8fafc" font-size="12">• Catmull-Rom 곡선 &amp; 플로팅 툴팁</text>
+          <text x="576" y="174" fill="#fbbf24" font-size="12" font-weight="700">• A/B 기준선 핀 고정 &amp; CSV 다운로드</text>
+        </svg>
+      </div>
+      <div class="step-caption">3단계: 질문 위저드(①) ➔ 6단계 핵심 브리핑(②) ➔ 상세 분석 &amp; 원장(③)</div>
+      <div class="step-subtext">별도 로그인 없이 바로 접속해 ① 위저드에서 조건을 입력하고, ② 핵심 브리핑에서 D-Day 5대 계좌 배치표를 확인한 다음, ③ 상세 분석에서 차트와 51개년 원장을 탐색해 보세요!</div>
+      <div class="step-detail-grid">
+        <div class="detail-box">
+          <h4>👶 초보자 추천 코스</h4>
+          <p>탭 1에서 프리셋을 고르고 Step 10까지 확인한 뒤, 탭 2의 <strong>STEP 01~03 파란색 실행 공식 카드</strong>만 읽어도 은퇴 준비가 끝나요!</p>
+        </div>
+        <div class="detail-box">
+          <h4>⚙️ 파워유저 추천 코스</h4>
+          <p><code>⚡ 전문가 통합 뷰</code>에서 <code>[📌 기준선(A) 고정]</code>을 누르고 개인:법인 슬라이더와 1,274종 ETF 비중을 조절하며 델타(차이)를 비교하세요.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 3-Pillar Takeaway Grid -->
+  <div class="grid-3">
+    <div class="pill-card">
+      <div class="pill-icon">🏺</div>
+      <div class="pill-title">1원 무오차 5-바스켓 원장</div>
+      <div class="pill-desc">IRP · ISA · 연금저축 · 일반계좌 · 가족법인 5개 유리병을 단일 상태머신으로 계산하여 1,174개 연차 전체에서 잔차 0원(<code>accountingResidual === 0</code>)을 보장합니다.</div>
+    </div>
+    <div class="pill-card">
+      <div class="pill-icon">⚖️</div>
+      <div class="pill-title">T3 · T4 · T5 한국 세법·건보 정밀 반영</div>
+      <div class="pill-desc">해외주식 양도세(22%), 법인 급여·배당 합산과세 및 익년 건보료 이월, 근속연수 기반 퇴직소득세와 2026년 건보료 개편안을 빠짐없이 반영합니다.</div>
+    </div>
+    <div class="pill-card">
+      <div class="pill-icon">🎛️</div>
+      <div class="pill-title">0.04초 실시간 슬라이더 &amp; 1,274종 ETF</div>
+      <div class="pill-desc">9단계 입력 위저드부터 3단계 실행 가이드, 한·미 1,274종 ETF 탐색기와 Catmull-Rom 곡선 차트까지 슬라이더 하나로 즉시 시뮬레이션합니다.</div>
+    </div>
+  </div>
+
+  <script>
+    function showStep(num, btn) {
+      document.querySelectorAll('.step-content').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.step-btn').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById('step-' + num);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+    function switchView(viewName, btn) {
+      document.querySelectorAll('.view-panel').forEach(el => el.classList.remove('active'));
+      document.querySelectorAll('.toggle-btn').forEach(el => el.classList.remove('active'));
+      const target = document.getElementById('view-' + viewName);
+      if (target) target.classList.add('active');
+      if (btn) btn.classList.add('active');
+    }
+  </script>
+</body>
+</html>
