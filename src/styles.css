@@ -14,6 +14,7 @@
   --text-secondary: #3d3c38;
   --text-muted: #686660;
   --accent-primary: #1d4ed8;
+  --accent-fill: #1d4ed8;
   --accent-hover: #1e40af;
   --accent-soft: #e0ebff;
   --editorial-pill-bg: #141413;
@@ -25,6 +26,7 @@
   --status-positive: #15803d;
   --status-warning: #b45309;
   --status-danger: #be123c;
+  --on-status: #ffffff;
 
   /* 1:1 Semantic Basket Colors */
   --basket-irp: #0ea5e9;
@@ -56,6 +58,7 @@
   --text-secondary: #d4d0c7;
   --text-muted: #9e9a8f;
   --accent-primary: #60a5fa;
+  --accent-fill: #2563eb;
   --accent-hover: #93c5fd;
   --accent-soft: rgba(96, 165, 250, 0.16);
   --editorial-pill-bg: #f4f1ea;
@@ -66,6 +69,7 @@
   --status-positive: #34d399;
   --status-warning: #fbbf24;
   --status-danger: #fda4af;
+  --on-status: #141413;
 }
 
 * {
@@ -629,7 +633,7 @@ table th,
   border: 1px solid var(--border-subtle);
 }
 .wizard-live-badge {
-  color: #ffffff;
+  color: var(--on-status);
   font-size: 11.5px;
   font-weight: 800;
   padding: 2px 9px;
@@ -936,7 +940,7 @@ table th,
   padding: 5px 10px;
   border: none;
   border-radius: 6px;
-  background: var(--accent-primary);
+  background: var(--accent-fill);
   color: #fff;
   font-size: 11px;
   font-weight: 700;
@@ -1123,7 +1127,7 @@ table th,
 }
 
 .lens-tab-btn.active {
-  background: var(--accent-primary);
+  background: var(--accent-fill);
   color: #ffffff;
 }
 
@@ -1213,7 +1217,7 @@ table th,
 .winner-pill {
   font-size: 10px;
   font-weight: 800;
-  background: var(--accent-primary);
+  background: var(--accent-fill);
   color: #fff;
   padding: 2px 6px;
   border-radius: 999px;
@@ -1652,7 +1656,7 @@ table th,
 .phase-tag {
   font-size: 10.5px;
   font-weight: 700;
-  background: var(--accent-primary);
+  background: var(--accent-fill);
   color: #fff;
   padding: 2px 7px;
   border-radius: 4px;
@@ -1795,6 +1799,7 @@ table th,
 .app-mode-switcher {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  align-items: end;
   gap: 6px;
   padding: 0 12px;
   background: transparent;
@@ -1825,6 +1830,14 @@ table th,
   opacity: 0.85;
   position: relative;
   transition: background 0.16s ease, color 0.16s ease, opacity 0.16s ease;
+}
+
+.app-mode-btn:not(.active) {
+  box-shadow: inset 0 -2px 0 var(--ink-frame);
+}
+
+[data-theme='dark'] .app-mode-btn:not(.active) {
+  box-shadow: inset 0 -1.5px 0 var(--ink-frame);
 }
 
 .app-mode-btn:hover {
@@ -1865,7 +1878,6 @@ table th,
 
 .binder-sheet {
   position: relative;
-  z-index: 4;
   background-color: var(--bg-sheet);
   border: 2px solid var(--ink-frame);
   border-radius: 10px;
@@ -1931,7 +1943,9 @@ table th,
     padding: 10px;
   }
   .binder-arch-inner {
-    padding: 10px;
+    border: none;
+    padding: 0;
+    background: transparent;
   }
 }
 
@@ -2113,19 +2127,21 @@ table th,
   align-items: center;
   gap: 10px;
   flex-wrap: wrap;
+  min-width: 0;
 }
 
 .wizard-category-badge {
   font-family: var(--mono-font);
   font-size: 11px;
   font-weight: 800;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.05em;
   color: var(--editorial-pill-fg);
   background: var(--editorial-pill-bg);
   padding: 4px 10px;
   border-radius: 6px;
-  white-space: nowrap;
-  flex-shrink: 0;
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.35;
 }
 
 .wizard-default-note {
@@ -2675,7 +2691,7 @@ table th,
 }
 .verdict-hero-badge {
   background: var(--verdict-tone);
-  color: #ffffff;
+  color: var(--on-status);
   font-size: 14px;
   font-weight: 800;
   padding: 4px 12px;
@@ -3743,6 +3759,7 @@ table th,
 
   :root,
   [data-theme='dark'] {
+    color-scheme: light !important;
     --bg-app: #ffffff !important;
     --bg-sheet: #ffffff !important;
     --bg-panel: #ffffff !important;
@@ -3759,7 +3776,16 @@ table th,
     --text-secondary: #334155 !important;
     --text-muted: #64748b !important;
     --accent-primary: #1d4ed8 !important;
+    --accent-fill: #1d4ed8 !important;
     --accent-soft: #eff6ff !important;
+    --status-positive: #15803d !important;
+    --status-warning: #b45309 !important;
+    --status-danger: #be123c !important;
+    --on-status: #ffffff !important;
+    --editorial-pill-bg: #141413 !important;
+    --editorial-pill-fg: #fde047 !important;
+    --editorial-cta-bg: #141413 !important;
+    --editorial-cta-fg: #faf8f4 !important;
   }
 
   body {
@@ -4567,7 +4593,7 @@ table th,
   width: 26px;
   height: 26px;
   border-radius: 50%;
-  background: var(--accent-primary);
+  background: var(--accent-fill);
   color: #ffffff;
   font-weight: 700;
   font-size: 14px;

@@ -1688,6 +1688,26 @@ check(
   );
 }
 
+// 39. v1.2.26 Final Review Pass: Mobile zero-overflow (.wizard-category-badge wrap + compact arch-inner),
+//     Dark-mode WCAG AA status/accent fill contrast (--on-status / --accent-fill), Print dark-mode isolation,
+//     Binder-sheet stacking context safety (no z-index on .binder-sheet), and inactive folder-tab bottom border
+{
+  const cssRev = fs.readFileSync('src/styles.css', 'utf-8');
+  const b9IdxRev = cssRev.indexOf('B9 (U4)');
+  const preB9Rev = cssRev.slice(0, b9IdxRev);
+  check(
+    !/\.wizard-category-badge\s*\{[^}]*white-space:\s*nowrap/s.test(preB9Rev) &&
+      /\.wizard-category-badge\s*\{[^}]*max-width:\s*100%/s.test(preB9Rev) &&
+      !/\.binder-sheet\s*\{[^}]*z-index:/s.test(preB9Rev) &&
+      preB9Rev.includes('.app-mode-btn:not(.active)') &&
+      preB9Rev.includes('--on-status:') &&
+      preB9Rev.includes('--accent-fill:') &&
+      /@media print[\s\S]*?color-scheme:\s*light\s*!important/.test(cssRev) &&
+      /@media print[\s\S]*?--status-positive:\s*#15803d\s*!important/.test(cssRev),
+    'Final Review Pass: mobile category badge must wrap without overflow, .binder-sheet must not trap z-index, inactive tabs must show bottom rule, and dark/print status tokens must be AA-calibrated and print-isolated',
+  );
+}
+
 console.log(
   `✅ PASS: uiParity.test.ts (${verifiedModes} preset/mode combinations verified for 0-Won UI parity, InputWizard [입력 1~5], ActionGuideView [출력 1~2], Tab 2 & Tab 3 invariants, Step 6/7 split return slides, Method B dual-scope ETF builder, spouseExpectedSeverancePay, Phase A~D, CSS polish & Tab 3 Doc Update v1.2.5~v1.2.23)`,
 );
