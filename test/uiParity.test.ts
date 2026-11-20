@@ -1658,6 +1658,23 @@ check(
   );
 }
 
+// 37. v1.2.26 Task 3: FLYQ/Misso Editorial Card Framing, Monospace Indices & Active Butter Header
+{
+  const cssT3 = fs.readFileSync('src/styles.css', 'utf-8');
+  const b9IdxT3 = cssT3.indexOf('B9 (U4)');
+  const preB9T3 = cssT3.slice(0, b9IdxT3);
+  check(
+    /\.wizard-focus-card\s*\{[^}]*var\(--ink-frame\)/s.test(preB9T3) &&
+      /\.canvas-card\s*\{[^}]*var\(--ink-frame\)/s.test(preB9T3) &&
+      /\.analysis-tile-card\s*\{[^}]*var\(--ink-frame\)/s.test(preB9T3) &&
+      /\.analysis-tile-card\.active\s*\{[^}]*var\(--bg-active-head\)/s.test(preB9T3) &&
+      /\.wizard-step-num\s*\{[^}]*var\(--mono-font\)/s.test(preB9T3) &&
+      /\.wizard-category-badge\s*\{[^}]*var\(--editorial-pill-bg\)/s.test(preB9T3) &&
+      /\.ledger-table-scroll\s*\{[^}]*var\(--ink-frame\)/s.test(preB9T3),
+    'Task 3: Focus cards, canvas cards, bento tiles, step indices, and ledger wrapper must use editorial ink framing and monospace tokens above B9 (U4)',
+  );
+}
+
 console.log(
   `✅ PASS: uiParity.test.ts (${verifiedModes} preset/mode combinations verified for 0-Won UI parity, InputWizard [입력 1~5], ActionGuideView [출력 1~2], Tab 2 & Tab 3 invariants, Step 6/7 split return slides, Method B dual-scope ETF builder, spouseExpectedSeverancePay, Phase A~D, CSS polish & Tab 3 Doc Update v1.2.5~v1.2.23)`,
 );
