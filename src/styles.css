@@ -1,20 +1,30 @@
 :root {
-  --bg-app: #f8fafc;
+  --bg-app: #e8e4da;
+  --bg-sheet: #faf8f4;
   --bg-panel: #ffffff;
-  --bg-surface: #ffffff;
-  --bg-subtle: #f1f5f9;
+  --bg-surface: #fcfbf8;
+  --bg-subtle: #f2eee4;
+  --bg-warm-head: #f4f1ea;
+  --bg-active-head: #fbf0cc;
   --bg-elevated: #ffffff;
-  --border-subtle: #e2e8f0;
-  --border-strong: #cbd5e1;
-  --text-primary: #0f172a;
-  --text-secondary: #475569;
-  --text-muted: #64748b;
-  --accent-primary: #2563eb;
-  --accent-hover: #1d4ed8;
-  --accent-soft: #eff6ff;
-  --status-positive: #059669;
-  --status-warning: #d97706;
-  --status-danger: #dc2626;
+  --border-subtle: #d5cfc3;
+  --border-strong: #9e988c;
+  --ink-frame: #141413;
+  --text-primary: #141413;
+  --text-secondary: #3d3c38;
+  --text-muted: #686660;
+  --accent-primary: #1d4ed8;
+  --accent-hover: #1e40af;
+  --accent-soft: #e0ebff;
+  --editorial-pill-bg: #141413;
+  --editorial-pill-fg: #fde047;
+  --editorial-cta-bg: #141413;
+  --editorial-cta-fg: #faf8f4;
+  --canvas-dot: rgba(20, 20, 19, 0.065);
+  --mono-font: 'JetBrains Mono', ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  --status-positive: #15803d;
+  --status-warning: #b45309;
+  --status-danger: #be123c;
 
   /* 1:1 Semantic Basket Colors */
   --basket-irp: #0ea5e9;
@@ -31,22 +41,31 @@
 }
 
 [data-theme='dark'] {
-  --bg-app: #090d16;
-  --bg-panel: #111827;
-  --bg-surface: #111827;
-  --bg-subtle: #1e293b;
-  --bg-elevated: #1f2937;
-  --border-subtle: #1f2937;
-  --border-strong: #334155;
-  --text-primary: #f8fafc;
-  --text-secondary: #cbd5e1;
-  --text-muted: #94a3b8;
-  --accent-primary: #3b82f6;
-  --accent-hover: #60a5fa;
-  --accent-soft: rgba(59, 130, 246, 0.14);
-  --status-positive: #10b981;
-  --status-warning: #f59e0b;
-  --status-danger: #f87171;
+  --bg-app: #111110;
+  --bg-sheet: #191816;
+  --bg-panel: #21201d;
+  --bg-surface: #262521;
+  --bg-subtle: #2d2b26;
+  --bg-warm-head: #282621;
+  --bg-active-head: #3a331d;
+  --bg-elevated: #262521;
+  --border-subtle: #3d3a33;
+  --border-strong: #5c584e;
+  --ink-frame: #d8d4ca;
+  --text-primary: #f5f3ee;
+  --text-secondary: #d4d0c7;
+  --text-muted: #9e9a8f;
+  --accent-primary: #60a5fa;
+  --accent-hover: #93c5fd;
+  --accent-soft: rgba(96, 165, 250, 0.16);
+  --editorial-pill-bg: #f4f1ea;
+  --editorial-pill-fg: #141413;
+  --editorial-cta-bg: #fde047;
+  --editorial-cta-fg: #141413;
+  --canvas-dot: rgba(245, 243, 238, 0.055);
+  --status-positive: #34d399;
+  --status-warning: #fbbf24;
+  --status-danger: #fda4af;
 }
 
 * {
@@ -58,6 +77,8 @@
 body {
   font-family: -apple-system, BlinkMacSystemFont, 'Pretendard', 'Inter', system-ui, sans-serif;
   background-color: var(--bg-app);
+  background-image: radial-gradient(var(--canvas-dot) 1px, transparent 0);
+  background-size: 22px 22px;
   color: var(--text-primary);
   line-height: 1.45;
   -webkit-font-smoothing: antialiased;
@@ -3549,12 +3570,17 @@ table th,
   :root,
   [data-theme='dark'] {
     --bg-app: #ffffff !important;
+    --bg-sheet: #ffffff !important;
     --bg-panel: #ffffff !important;
     --bg-surface: #ffffff !important;
     --bg-subtle: #f8fafc !important;
+    --bg-warm-head: #f8fafc !important;
+    --bg-active-head: #eff6ff !important;
     --bg-elevated: #ffffff !important;
     --border-subtle: #cbd5e1 !important;
     --border-strong: #94a3b8 !important;
+    --ink-frame: #cbd5e1 !important;
+    --canvas-dot: transparent !important;
     --text-primary: #0f172a !important;
     --text-secondary: #334155 !important;
     --text-muted: #64748b !important;
@@ -3564,6 +3590,7 @@ table th,
 
   body {
     background: #ffffff !important;
+    background-image: none !important;
     color: #0f172a !important;
     -webkit-print-color-adjust: exact !important;
     print-color-adjust: exact !important;

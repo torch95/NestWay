@@ -1613,6 +1613,28 @@ check(
   );
 }
 
+// 35. v1.2.26 Task 1: Warm Paper & Ink Editorial Binder Tokens + Dark/Print Isolation
+{
+  const cssT1 = fs.readFileSync('src/styles.css', 'utf-8');
+  const b9IdxT1 = cssT1.indexOf('B9 (U4)');
+  check(b9IdxT1 > 0, 'B9 (U4) block must exist in styles.css');
+  const preB9T1 = cssT1.slice(0, b9IdxT1);
+  check(
+    preB9T1.includes('--bg-sheet:') &&
+      preB9T1.includes('--ink-frame:') &&
+      preB9T1.includes('--bg-warm-head:') &&
+      preB9T1.includes('--bg-active-head:') &&
+      preB9T1.includes('--editorial-pill-bg:') &&
+      preB9T1.includes('--editorial-pill-fg:') &&
+      preB9T1.includes('--mono-font:') &&
+      preB9T1.includes('--canvas-dot:') &&
+      preB9T1.includes('radial-gradient(var(--canvas-dot)') &&
+      cssT1.includes('@media print') &&
+      /background-image:\s*none\s*!important/.test(cssT1),
+    'Task 1: Warm Paper & Ink tokens must be defined above B9 (U4) for light/dark and stripped in @media print',
+  );
+}
+
 console.log(
   `✅ PASS: uiParity.test.ts (${verifiedModes} preset/mode combinations verified for 0-Won UI parity, InputWizard [입력 1~5], ActionGuideView [출력 1~2], Tab 2 & Tab 3 invariants, Step 6/7 split return slides, Method B dual-scope ETF builder, spouseExpectedSeverancePay, Phase A~D, CSS polish & Tab 3 Doc Update v1.2.5~v1.2.23)`,
 );
