@@ -348,15 +348,16 @@ check(
     featuresSrc.includes('5.40%') &&
     featuresSrc.includes('448290') &&
     featuresSrc.includes('NestWay Slider') &&
-    versionSrc === '1.2.25' &&
+    versionSrc === '1.2.26' &&
     pkgVersionSrc === versionSrc &&
     featuresSrc.includes('## 27. v1.2.20') &&
     featuresSrc.includes('## 28. v1.2.21') &&
     featuresSrc.includes('## 29. v1.2.22') &&
     featuresSrc.includes('## 30. v1.2.23') &&
     featuresSrc.includes('## 31. v1.2.24') &&
-    featuresSrc.includes('## 32. v1.2.25'),
-  'FEATURES.md must document the ETF builder + engine reliability work; VERSION = package.json = latest FEATURES release (1.2.25)',
+    featuresSrc.includes('## 32. v1.2.25') &&
+    featuresSrc.includes('## 33. v1.2.26'),
+  'FEATURES.md must document the ETF builder + engine reliability work; VERSION = package.json = latest FEATURES release (1.2.26)',
 );
 
 // 13. Brand identity: NestWay Slider across HTML, App shell, InputWizard, ActionGuideView, package.json, solver, and ENGINE_ANALYSIS_REPORT.md
@@ -1672,6 +1673,18 @@ check(
       /\.wizard-category-badge\s*\{[^}]*var\(--editorial-pill-bg\)/s.test(preB9T3) &&
       /\.ledger-table-scroll\s*\{[^}]*var\(--ink-frame\)/s.test(preB9T3),
     'Task 3: Focus cards, canvas cards, bento tiles, step indices, and ledger wrapper must use editorial ink framing and monospace tokens above B9 (U4)',
+  );
+}
+
+// 38. v1.2.26 Task 4: Soft Inner Form Border Hierarchy (1px --border-subtle + focus ring) vs Outer Ink Frame
+{
+  const cssT4 = fs.readFileSync('src/styles.css', 'utf-8');
+  const b9IdxT4 = cssT4.indexOf('B9 (U4)');
+  const preB9T4 = cssT4.slice(0, b9IdxT4);
+  check(
+    /\.wizard-primary-input-box\s*\{[^}]*background:\s*var\(--bg-surface\)[^}]*border:\s*1px solid var\(--border-subtle\)/s.test(preB9T4) &&
+      preB9T4.includes('.dock-input-unit:focus-within'),
+    'Task 4: Inner form boxes and numeric inputs must preserve soft 1px --border-subtle hierarchy with focus-within ring above B9 (U4)',
   );
 }
 
