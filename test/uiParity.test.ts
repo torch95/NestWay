@@ -1635,6 +1635,29 @@ check(
   );
 }
 
+// 36. v1.2.26 Task 2: Editorial Masthead, 3-Mode Trapezoidal Binder Tabs & Sheet Frame
+{
+  const appT2 = fs.readFileSync('src/App.tsx', 'utf-8');
+  const cssT2 = fs.readFileSync('src/styles.css', 'utf-8');
+  const b9IdxT2 = cssT2.indexOf('B9 (U4)');
+  const preB9T2 = cssT2.slice(0, b9IdxT2);
+  check(
+    appT2.includes('brand-emblem') &&
+      appT2.includes('binder-shell-wrap') &&
+      appT2.includes('binder-tabs-bar') &&
+      appT2.includes('binder-tab-idx') &&
+      appT2.includes('binder-sheet') &&
+      appT2.includes('binder-arch-inner') &&
+      preB9T2.includes('clip-path: polygon(') &&
+      preB9T2.includes('.binder-sheet') &&
+      preB9T2.includes('.binder-arch-inner') &&
+      !/\.binder-sheet\s*\{[^}]*transform:/s.test(cssT2) &&
+      !/\.binder-arch-inner\s*\{[^}]*transform:/s.test(cssT2) &&
+      /@media print[\s\S]*?\.binder-tabs-bar/.test(cssT2),
+    'Task 2: App.tsx must render editorial masthead, trapezoidal 3-mode binder tabs, and zero-transform binder-sheet/binder-arch-inner isolated in @media print',
+  );
+}
+
 console.log(
   `✅ PASS: uiParity.test.ts (${verifiedModes} preset/mode combinations verified for 0-Won UI parity, InputWizard [입력 1~5], ActionGuideView [출력 1~2], Tab 2 & Tab 3 invariants, Step 6/7 split return slides, Method B dual-scope ETF builder, spouseExpectedSeverancePay, Phase A~D, CSS polish & Tab 3 Doc Update v1.2.5~v1.2.23)`,
 );

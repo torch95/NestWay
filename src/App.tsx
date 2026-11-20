@@ -125,40 +125,26 @@ export const App: React.FC = () => {
     <div className="app-shell">
       <header className="top-bar">
         <div className="brand-group">
+          <span className="brand-emblem" aria-hidden="true">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" />
+              <path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" />
+              <path d="M9 7h6M9 11h6" />
+            </svg>
+          </span>
           <strong className="brand-title">NestWay</strong>
           <span className="brand-badge">Slider</span>
           <span className="brand-sub">은퇴 금융자산 최적화 워크벤치 · 1-Won Exact</span>
         </div>
-
-        <nav className="app-mode-switcher" aria-label="화면 모드 전환">
-          <button
-            type="button"
-            className={`app-mode-btn ${appMode === 'wizard' ? 'active' : ''}`}
-            aria-current={appMode === 'wizard' ? 'page' : undefined}
-            onClick={() => setAppMode('wizard')}
-          >
-            <span className="label-full">① 조건 입력 (단계별 위저드)</span>
-            <span className="label-short">① 입력</span>
-          </button>
-          <button
-            type="button"
-            className={`app-mode-btn ${appMode === 'briefing' ? 'active' : ''}`}
-            aria-current={appMode === 'briefing' ? 'page' : undefined}
-            onClick={() => setAppMode('briefing')}
-          >
-            <span className="label-full">② 핵심 결과 브리핑 (단계별 슬라이드)</span>
-            <span className="label-short">② 결과 브리핑</span>
-          </button>
-          <button
-            type="button"
-            className={`app-mode-btn ${appMode === 'guide' ? 'active' : ''}`}
-            aria-current={appMode === 'guide' ? 'page' : undefined}
-            onClick={() => setAppMode('guide')}
-          >
-            <span className="label-full">③ 상세 분석 & 원장</span>
-            <span className="label-short">③ 상세 분석</span>
-          </button>
-        </nav>
 
         <div className="top-actions">
           {syncNotice && (
@@ -217,60 +203,99 @@ export const App: React.FC = () => {
         </div>
       </header>
 
-      {appMode === 'wizard' && (
-        <main className="wizard-main-stage">
-          <InputWizard
-            inputs={inputs}
-            plan={plan}
-            step={wizardStep}
-            onStepChange={setWizardStep}
-            onChange={setInputs}
-            onCompleteToGuide={() => {
-              setBriefingStep(1);
-              setAppMode('briefing');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-          />
-        </main>
-      )}
+      <div className="binder-shell-wrap">
+        <nav className="app-mode-switcher binder-tabs-bar" aria-label="화면 모드 전환">
+          <button
+            type="button"
+            className={`app-mode-btn ${appMode === 'wizard' ? 'active' : ''}`}
+            aria-current={appMode === 'wizard' ? 'page' : undefined}
+            onClick={() => setAppMode('wizard')}
+          >
+            <span className="binder-tab-idx">STEP 01</span>
+            <span className="label-full">① 조건 입력 (단계별 위저드)</span>
+            <span className="label-short">① 입력</span>
+          </button>
+          <button
+            type="button"
+            className={`app-mode-btn ${appMode === 'briefing' ? 'active' : ''}`}
+            aria-current={appMode === 'briefing' ? 'page' : undefined}
+            onClick={() => setAppMode('briefing')}
+          >
+            <span className="binder-tab-idx">STEP 02</span>
+            <span className="label-full">② 핵심 결과 브리핑 (단계별 슬라이드)</span>
+            <span className="label-short">② 결과 브리핑</span>
+          </button>
+          <button
+            type="button"
+            className={`app-mode-btn ${appMode === 'guide' ? 'active' : ''}`}
+            aria-current={appMode === 'guide' ? 'page' : undefined}
+            onClick={() => setAppMode('guide')}
+          >
+            <span className="binder-tab-idx">STEP 03</span>
+            <span className="label-full">③ 상세 분석 & 원장</span>
+            <span className="label-short">③ 상세 분석</span>
+          </button>
+        </nav>
 
-      {(appMode === 'briefing' || appMode === 'guide') && (
-        <main className="guide-main-stage">
-          <ActionGuideView
-            inputs={inputs}
-            plan={plan}
-            snapshotA={snapshotA}
-            guideSection={appMode === 'briefing' ? 'briefing' : 'analytics'}
-            briefingStep={briefingStep}
-            onBriefingStepChange={setBriefingStep}
-            selectedTile={selectedTile}
-            isPrintMode={isPrintMode}
-            onPrintReport={handlePrintReport}
-            onSelectTile={setSelectedTile}
-            onSwitchToBriefing={() => {
-              setAppMode('briefing');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onSwitchToAnalytics={() => {
-              setAppMode('guide');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onJumpToAnalyticsTile={(tile) => {
-              setSelectedTile(tile);
-              setAppMode('guide');
-              window.scrollTo({ top: 0, behavior: 'smooth' });
-            }}
-            onPinSnapshotA={() => setSnapshotA(plan)}
-            onClearSnapshotA={() => setSnapshotA(null)}
-            onChangeInputs={setInputs}
-            onBackToWizard={() => setAppMode('wizard')}
-            onJumpToWizardStep={(step) => {
-              setWizardStep(step);
-              setAppMode('wizard');
-            }}
-          />
-        </main>
-      )}
+        <div className="binder-sheet">
+          <div className="binder-arch-inner">
+            {appMode === 'wizard' && (
+              <main className="wizard-main-stage">
+                <InputWizard
+                  inputs={inputs}
+                  plan={plan}
+                  step={wizardStep}
+                  onStepChange={setWizardStep}
+                  onChange={setInputs}
+                  onCompleteToGuide={() => {
+                    setBriefingStep(1);
+                    setAppMode('briefing');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                />
+              </main>
+            )}
+
+            {(appMode === 'briefing' || appMode === 'guide') && (
+              <main className="guide-main-stage">
+                <ActionGuideView
+                  inputs={inputs}
+                  plan={plan}
+                  snapshotA={snapshotA}
+                  guideSection={appMode === 'briefing' ? 'briefing' : 'analytics'}
+                  briefingStep={briefingStep}
+                  onBriefingStepChange={setBriefingStep}
+                  selectedTile={selectedTile}
+                  isPrintMode={isPrintMode}
+                  onPrintReport={handlePrintReport}
+                  onSelectTile={setSelectedTile}
+                  onSwitchToBriefing={() => {
+                    setAppMode('briefing');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onSwitchToAnalytics={() => {
+                    setAppMode('guide');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onJumpToAnalyticsTile={(tile) => {
+                    setSelectedTile(tile);
+                    setAppMode('guide');
+                    window.scrollTo({ top: 0, behavior: 'smooth' });
+                  }}
+                  onPinSnapshotA={() => setSnapshotA(plan)}
+                  onClearSnapshotA={() => setSnapshotA(null)}
+                  onChangeInputs={setInputs}
+                  onBackToWizard={() => setAppMode('wizard')}
+                  onJumpToWizardStep={(step) => {
+                    setWizardStep(step);
+                    setAppMode('wizard');
+                  }}
+                />
+              </main>
+            )}
+          </div>
+        </div>
+      </div>
     </div>
   );
 };
